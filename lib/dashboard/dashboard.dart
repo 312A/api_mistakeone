@@ -8,20 +8,24 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<List<UserModel>>(
+      body: FutureBuilder<UserModel>(
         future: ApiService().getuserData(), // Corrected method call
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final result = snapshot.data!; // Changed to access the list directly
             return Column(
-              children: [
-                ...result.map((e) => ListTile(
-                  title: Text(e.email),
-                  trailing: Text(e.id.toString()),
-                ))
+              // children: [
+              //   ...result.data!((e) => ListTile(
+              //     title: Text(e.email),
+              //     trailing: Text(e.id.toString()),
+              //   ))
                 
-                // ...result.map((e) => Text(e.email)).toList(),
-              ],
+              //   // ...result.map((e) => Text(e.email)).toList(),
+              // ],
+              children:List.generate(result.data!.length, (index) => ListTile(
+                title: Text(result.data![index].id!.toString()),
+                subtitle: Text(result.support!.url!.toString()),
+              ))
             );
           } else if (snapshot.hasError) {
             return Text(snapshot.error.toString());
